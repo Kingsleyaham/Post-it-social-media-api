@@ -1,5 +1,5 @@
 import { authService } from "./../services/auth.service";
-import { ILogin } from "./../services/interfaces/login.interface";
+import { ILogin } from "../interfaces/login.interface";
 import { Request, Response } from "express";
 import { userService } from "../services/user.services";
 

@@ -1,10 +1,10 @@
 import { userService } from "./user.services";
 import { Types } from "mongoose";
-import { ILogin } from "./interfaces/login.interface";
+import { ILogin } from "../interfaces/login.interface";
 import { passwordCompare } from "../utils/hashPassword";
 import jwt from "jsonwebtoken";
 import { jwtConfig } from "../config";
-import { IToken } from "./interfaces/token.interface";
+import { IToken } from "../interfaces/token.interface";
 
 class AuthService {
   async signToken(userId: Types.ObjectId, email: string): Promise<IToken> {

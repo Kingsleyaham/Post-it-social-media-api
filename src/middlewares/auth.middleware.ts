@@ -1,10 +1,7 @@
-import { NextFunction, Request, Response } from "express";
+import { RequestWithUser } from "./../interfaces/request.interface";
+import { NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
 import { jwtConfig } from "../config";
-
-export interface RequestWithUser extends Request {
-  user?: any;
-}
 
 export const requireAuth = async (
   req: RequestWithUser,

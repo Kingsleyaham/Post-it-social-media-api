@@ -1,4 +1,4 @@
-import { validateUser } from "./../middlewares/validation.middleware";
+import { validateUser } from "../middlewares/validateUser.middleware";
 import { userController } from "./../controllers/user.controller";
 
 import { Router } from "express";

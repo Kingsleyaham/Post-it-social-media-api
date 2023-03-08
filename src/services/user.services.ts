@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import User from "../models/user.model";
 import { passwordHash } from "../utils/hashPassword";
-import { ICreateUser } from "./interfaces/createUser.interface";
+import { ICreateUser } from "../interfaces/createUser.interface";
 
 class UserService {
   /** Fetch a single user from database using id*/

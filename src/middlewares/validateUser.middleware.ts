@@ -4,7 +4,7 @@ import {
   userValidationSchema,
   loginValidationSchema,
   signupValidationSchema,
-} from "../schema/validation.schema";
+} from "../schema/userValidation.schema";
 export const validateUser = async (
   req: Request,
   res: Response,
