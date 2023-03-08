@@ -1,0 +1,34 @@
+import express, { Request, Response } from "express";
+import { appConfig, dbConfig } from "./config";
+import bodyParser from "body-parser";
+import helmet from "helmet";
+import mongoose from "mongoose";
+import router from "./routes/";
+import dotenv from "dotenv";
+dotenv.config();
+
+const app = express();
+
+mongoose.set("strictQuery", true);
+// connection to database
+mongoose
+  .connect(dbConfig.DATABASE_URI)
+  .then(() =>
+    app.listen(appConfig.PORT, () =>
+      console.log(
+        `server running on http://${appConfig.HOST}:${appConfig.PORT}`
+      )
+    )
+  )
+  .catch((err) => console.log(err));
+
+// third part middlewares
+app.use(bodyParser.json());
+app.use(helmet());
+
+// router
+app.use("/api", router);
+
+app.get("/*", (req: Request, res: Response) => {
+  res.send("page not found");
+});
