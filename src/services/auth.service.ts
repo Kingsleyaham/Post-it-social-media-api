@@ -1,12 +1,13 @@
-import { userService } from "./user.services";
+import { userService } from "./user.service";
 import { Types } from "mongoose";
-import { ILogin } from "./interfaces/login.interface";
+import { ILogin } from "../interfaces/login.interface";
 import { passwordCompare } from "../utils/hashPassword";
 import jwt from "jsonwebtoken";
 import { jwtConfig } from "../config";
-import { IToken } from "./interfaces/token.interface";
+import { IToken } from "../interfaces/token.interface";
 
 class AuthService {
+  /** signs authentication token using user email and id. returns an access token */
   async signToken(userId: Types.ObjectId, email: string): Promise<IToken> {
     const payload = { sub: userId, email };
 

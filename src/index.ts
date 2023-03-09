@@ -9,9 +9,9 @@ dotenv.config();
 
 const app = express();
 
-mongoose.set("strictQuery", true);
-// connection to database
+// database connection
 mongoose
+  .set("strictQuery", true)
   .connect(dbConfig.DATABASE_URI)
   .then(() =>
     app.listen(appConfig.PORT, () =>
@@ -20,7 +20,7 @@ mongoose
       )
     )
   )
-  .catch((err) => console.log(err));
+  .catch((err) => console.log(err.message));
 
 // third part middlewares
 app.use(bodyParser.json());
