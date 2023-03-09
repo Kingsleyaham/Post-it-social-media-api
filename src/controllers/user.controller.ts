@@ -7,7 +7,8 @@ class UserController {
   async findAll(req: Request, res: Response) {
     try {
       const users = await userService.findAll();
-      res.status(200).json({ success: true, users });
+
+      return res.status(200).json({ success: true, users });
     } catch (err: any) {
       res.status(401).json({ success: false, message: err.message });
     }
@@ -19,9 +20,7 @@ class UserController {
       const id = new Types.ObjectId(req.params.id);
       const user = await userService.findById(id);
 
-      if (user) {
-        return res.status(200).json({ success: true, user });
-      }
+      if (user) return res.status(200).json({ success: true, user });
 
       return res.status(401).json({ success: 0, message: "user not found" });
     } catch (err: any) {
@@ -33,6 +32,7 @@ class UserController {
   async updateUser(req: Request, res: Response) {
     try {
       const id = new Types.ObjectId(req.params.id);
+
       await userService.updateUser(id, req.body);
 
       return res
@@ -47,6 +47,7 @@ class UserController {
   async deleteUser(req: Request, res: Response) {
     try {
       const id = new Types.ObjectId(req.params.id);
+
       await userService.deleteUser(id);
 
       return res

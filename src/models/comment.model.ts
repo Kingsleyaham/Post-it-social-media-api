@@ -1,6 +1,7 @@
+import { IComment } from "./../interfaces/comment.interface";
 import { model, Schema, Types } from "mongoose";
 
-const commentSchema = new Schema(
+const commentSchema = new Schema<IComment>(
   {
     content: {
       type: String,
@@ -23,6 +24,6 @@ const commentSchema = new Schema(
   { timestamps: true }
 );
 
-const Comment = model("Comment", commentSchema);
+const Comment = model<IComment>("Comment", commentSchema);
 
 export default Comment;

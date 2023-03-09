@@ -33,11 +33,10 @@ class PostController {
   async findOne(req: RequestWithUser, res: Response) {
     try {
       const postId = new Types.ObjectId(req.params.id);
+
       const post = await postService.findOne(postId);
 
-      if (post) {
-        return res.status(200).json({ success: true, post });
-      }
+      if (post) return res.status(200).json({ success: true, post });
 
       return res.status(404).json({ success: 0, message: "post not found" });
     } catch (err: any) {

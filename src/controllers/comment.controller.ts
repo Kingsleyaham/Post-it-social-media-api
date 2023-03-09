@@ -9,6 +9,7 @@ class CommentController {
   async findAll(req: RequestWithUser, res: Response) {
     try {
       const postId = new Types.ObjectId(req.params.postId);
+
       const comments = await commentService.findAll(postId);
 
       return res.status(200).json({ success: true, comments });
@@ -19,11 +20,11 @@ class CommentController {
 
   /** Creates a new comment and stores it in database along with the user that created the post and the post id*/
   async create(req: RequestWithUser, res: Response) {
-    const userId = req.user.sub;
-    const reqBody: ICreatePost = req.body;
-
     try {
+      const userId = req.user.sub;
+      const reqBody: ICreatePost = req.body;
       const postId = new Types.ObjectId(req.params.postId);
+
       const comment = await commentService.createComment(
         userId,
         postId,
@@ -43,9 +44,8 @@ class CommentController {
       const postId = new Types.ObjectId(req.params.postId);
 
       const comment = await commentService.findOne(postId, commentId);
-      if (comment) {
-        return res.status(200).json({ success: true, comment });
-      }
+
+      if (comment) return res.status(200).json({ success: true, comment });
 
       return res
         .status(404)

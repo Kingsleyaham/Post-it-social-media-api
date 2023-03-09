@@ -1,5 +1,4 @@
 import { Types } from "mongoose";
-import { ICreatePost } from "../interfaces/createPost.interface";
 import Post from "../models/post.model";
 
 class PostService {
@@ -24,8 +23,8 @@ class PostService {
     userId: Types.ObjectId,
     post: string
   ) {
-    const postExist = await this.findOne(postId);
-    const postUser = postExist.user;
+    const postExist: any = await this.findOne(postId);
+    const postUser = new Types.ObjectId(postExist.user);
 
     if (!postExist) throw new Error("error updated post");
 
@@ -36,8 +35,8 @@ class PostService {
   }
 
   async deletePost(postId: Types.ObjectId, userId: Types.ObjectId) {
-    const postExist = await this.findOne(postId);
-    const postUser = postExist.user;
+    const postExist: any = await this.findOne(postId);
+    const postUser = new Types.ObjectId(postExist.user);
 
     if (!postExist) throw new Error("post not found");
 

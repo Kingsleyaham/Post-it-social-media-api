@@ -21,7 +21,6 @@ export const generateRandomAvatar = async (email: string) => {
   const randomAvatarStyle = getRandomAvatarStyle();
 
   if (!randomAvatarStyle || !avatarStyles.includes(randomAvatarStyle)) {
-    // console.error('Invalid avatar style') // log this error to the console
     throw new Error("Error creating avatar url ");
   }
 

@@ -1,6 +1,7 @@
+import { IReply } from "./../interfaces/reply.interface";
 import { model, Schema, Types } from "mongoose";
 
-const replySchema = new Schema(
+const replySchema = new Schema<IReply>(
   {
     content: {
       type: String,
@@ -22,6 +23,6 @@ const replySchema = new Schema(
   { timestamps: true }
 );
 
-const Post = model("Reply", replySchema);
+const Post = model<IReply>("Reply", replySchema);
 
 export default Post;

@@ -1,10 +1,10 @@
 import express, { Request, Response } from "express";
-import { appConfig, dbConfig } from "./config";
 import bodyParser from "body-parser";
 import helmet from "helmet";
 import mongoose from "mongoose";
 import router from "./routes/";
 import dotenv from "dotenv";
+import { appConfig, dbConfig } from "./config";
 dotenv.config();
 
 const app = express();
