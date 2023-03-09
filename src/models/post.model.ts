@@ -1,6 +1,7 @@
+import { IPost } from "./../interfaces/post.interface";
 import { model, Schema, Types } from "mongoose";
 
-const postSchema = new Schema(
+const postSchema = new Schema<IPost>(
   {
     content: {
       type: String,
@@ -19,6 +20,6 @@ const postSchema = new Schema(
   { timestamps: true }
 );
 
-const Post = model("Post", postSchema);
+const Post = model<IPost>("Post", postSchema);
 
 export default Post;

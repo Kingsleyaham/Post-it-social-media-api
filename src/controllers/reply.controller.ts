@@ -46,9 +46,7 @@ class ReplyController {
 
       const reply = await replyService.findOne(commentId, replyId);
 
-      if (reply) {
-        return res.status(200).json({ success: true, result: reply });
-      }
+      if (reply) return res.status(200).json({ success: true, result: reply });
 
       return res
         .status(404)
