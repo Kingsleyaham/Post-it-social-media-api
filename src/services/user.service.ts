@@ -1,6 +1,6 @@
+import { generateRandomAvatar } from "./../utils/avatar/index";
 import { Types } from "mongoose";
 import User from "../models/user.model";
-import { passwordHash } from "../utils/hashPassword";
 import { ICreateUser } from "../interfaces/createUser.interface";
 
 class UserService {
@@ -37,11 +37,15 @@ class UserService {
     const emailExist = await this.findByEmail(newUser.email);
 
     if (!(usernameExist || emailExist)) {
-      const { username, email, password, image } = newUser;
+      const { username, email, password } = newUser;
+      const avatarUrl = await generateRandomAvatar(email);
 
-      const hashedPassword = await passwordHash(password);
-
-      return User.create({ username, email, password: hashedPassword, image });
+      return User.create({
+        username,
+        email,
+        password,
+        avatarUrl,
+      });
     }
 
     throw new Error("user already exist");
@@ -51,11 +55,9 @@ class UserService {
   async updateUser(id: Types.ObjectId, user: Partial<ICreateUser>) {
     const userExist = await this.findById(id);
     if (userExist) {
-      if (user.password) {
-        user.password = await passwordHash(user.password);
-      }
+      const avatarUrl = await generateRandomAvatar(userExist.email);
 
-      return User.findByIdAndUpdate(id, { ...user });
+      return User.findByIdAndUpdate(id, { ...user, avatarUrl });
     }
 
     throw new Error("user not found");

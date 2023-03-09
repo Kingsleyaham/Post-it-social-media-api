@@ -1,7 +1,7 @@
+import bcrypt from "bcrypt";
 import { userService } from "./user.service";
 import { Types } from "mongoose";
 import { ILogin } from "../interfaces/login.interface";
-import { passwordCompare } from "../utils/hashPassword";
 import jwt from "jsonwebtoken";
 import { jwtConfig } from "../config";
 import { IToken } from "../interfaces/token.interface";
@@ -24,7 +24,7 @@ class AuthService {
 
     if (!user) throw new Error("Invalid email or password");
 
-    const pwdMatch = await passwordCompare(password, user.password);
+    const pwdMatch = await bcrypt.compare(password, user.password);
 
     if (!pwdMatch) throw new Error("Invalid email or password");
 

@@ -6,7 +6,7 @@ export const userValidationSchema = Joi.object({
     .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
     .trim(),
   password: Joi.string().min(8),
-  image: Joi.string(),
+  avatarUrl: Joi.string(),
 });
 
 export const loginValidationSchema = Joi.object().keys({
@@ -19,5 +19,5 @@ export const loginValidationSchema = Joi.object().keys({
 
 export const signupValidationSchema = loginValidationSchema.keys({
   username: Joi.string().alphanum().min(3).trim().required(),
-  image: Joi.string(),
+  avatarUrl: Joi.string(),
 });
