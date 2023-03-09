@@ -6,12 +6,19 @@ import { ICreateUser } from "../interfaces/createUser.interface";
 class UserService {
   /** Fetch a single user from database using id*/
   async findById(id: Types.ObjectId) {
-    return User.findById(id).where("isDeleted").equals(false);
+    return User.findById(id)
+      .where("isDeleted")
+      .equals(false)
+      .select("-password");
   }
 
   /** Fetch all users from database */
   async findAll() {
-    return User.find({}).where("isDeleted").equals(false);
+    return User.find({})
+      .where("isDeleted")
+      .equals(false)
+      .select("-password")
+      .lean();
   }
 
   /** Fetch a single user by username */
@@ -57,14 +64,13 @@ class UserService {
   /** delete a user in database */
   async deleteUser(id: Types.ObjectId) {
     const userExist = await User.findById(id);
-    if (userExist) {
-      return User.findByIdAndUpdate(id, {
-        isDeleted: true,
-        deletedAt: new Date(),
-      });
-    }
 
-    throw new Error("user not found");
+    if (!userExist) throw new Error("user not found");
+
+    return User.findByIdAndUpdate(id, {
+      isDeleted: true,
+      deletedAt: new Date(),
+    });
   }
 }
 

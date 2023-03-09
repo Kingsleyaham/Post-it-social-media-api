@@ -1,10 +1,10 @@
 import { model, Schema, Types } from "mongoose";
 
-const postSchema = new Schema(
+const replySchema = new Schema(
   {
     content: {
       type: String,
-      required: [true, "post is required"],
+      required: [true, "reply is required"],
       lowercase: true,
       trim: true,
     },
@@ -12,13 +12,16 @@ const postSchema = new Schema(
       type: Types.ObjectId,
       ref: "User",
     },
-
+    comment: {
+      type: Types.ObjectId,
+      ref: "Comment",
+    },
     isDeleted: { type: Boolean, default: false },
     deletedAt: { type: Date, default: null },
   },
   { timestamps: true }
 );
 
-const Post = model("Post", postSchema);
+const Post = model("Reply", replySchema);
 
 export default Post;

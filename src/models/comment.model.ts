@@ -2,7 +2,7 @@ import { model, Schema, Types } from "mongoose";
 
 const commentSchema = new Schema(
   {
-    body: {
+    content: {
       type: String,
       required: [true, "comment is required"],
       lowercase: true,
@@ -16,19 +16,6 @@ const commentSchema = new Schema(
       type: Types.ObjectId,
       ref: "User",
     },
-
-    replies: [
-      {
-        reply: { type: String, lowercase: true, trim: true },
-        user: {
-          type: Types.ObjectId,
-          ref: "User",
-        },
-        isDeleted: { type: Boolean, default: false },
-        deletedAt: { type: Date, default: null },
-      },
-      { timestamps: true },
-    ],
 
     isDeleted: { type: Boolean, default: false },
     deletedAt: { type: Date, default: null },

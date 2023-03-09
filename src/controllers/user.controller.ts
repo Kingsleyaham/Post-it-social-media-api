@@ -1,22 +1,24 @@
-import { userService } from "./../services/user.services";
+import { userService } from "../services/user.service";
 import { Request, Response } from "express";
 import { Types } from "mongoose";
 
 class UserController {
+  /** Fetch all users from database */
   async findAll(req: Request, res: Response) {
     try {
       const users = await userService.findAll();
-
       res.status(200).json({ success: true, users });
     } catch (err: any) {
       res.status(401).json({ success: false, message: err.message });
     }
   }
 
+  /** Fetch a single user from database using id */
   async findUser(req: Request, res: Response) {
-    const id = new Types.ObjectId(req.params.id);
     try {
+      const id = new Types.ObjectId(req.params.id);
       const user = await userService.findById(id);
+
       if (user) {
         return res.status(200).json({ success: true, user });
       }
@@ -27,9 +29,10 @@ class UserController {
     }
   }
 
+  /** Updates user info in database using id */
   async updateUser(req: Request, res: Response) {
-    const id = new Types.ObjectId(req.params.id);
     try {
+      const id = new Types.ObjectId(req.params.id);
       await userService.updateUser(id, req.body);
 
       return res
@@ -40,9 +43,10 @@ class UserController {
     }
   }
 
+  /** Delete a user in database using id */
   async deleteUser(req: Request, res: Response) {
-    const id = new Types.ObjectId(req.params.id);
     try {
+      const id = new Types.ObjectId(req.params.id);
       await userService.deleteUser(id);
 
       return res

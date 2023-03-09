@@ -1,38 +1,42 @@
-import { postService } from "./../services/post.services";
+import { postService } from "../services/post.service";
 import { RequestWithUser } from "./../interfaces/request.interface";
 import { Response } from "express";
 import { ICreatePost } from "../interfaces/createPost.interface";
 import { Types } from "mongoose";
 
 class PostController {
+  /** Fetch all posts from database sorted by newest first  */
   async findAll(req: RequestWithUser, res: Response) {
     try {
       const posts = await postService.findAll();
 
-      res.status(200).json({ success: true, posts });
+      return res.status(200).json({ success: true, posts });
     } catch (err: any) {
       res.status(401).json({ success: false, message: err.message });
     }
   }
 
+  /** Creates a new post and stores it in database along with the user that created the post */
   async create(req: RequestWithUser, res: Response) {
     const userId = req.user.sub;
     const reqBody: ICreatePost = req.body;
-
     try {
-      const post = await postService.createPost(userId, reqBody);
+      const post = await postService.createPost(userId, reqBody.content);
+
       return res.status(201).json({ success: true, post });
     } catch (err: any) {
       res.status(401).json({ success: false, message: err.message });
     }
   }
 
+  /** Fetch a single post from database using post id*/
   async findOne(req: RequestWithUser, res: Response) {
-    const id = new Types.ObjectId(req.params.id);
     try {
-      const user = await postService.findOne(id);
-      if (user) {
-        return res.status(200).json({ success: true, user });
+      const postId = new Types.ObjectId(req.params.id);
+      const post = await postService.findOne(postId);
+
+      if (post) {
+        return res.status(200).json({ success: true, post });
       }
 
       return res.status(404).json({ success: 0, message: "post not found" });
@@ -41,12 +45,14 @@ class PostController {
     }
   }
 
+  /** Updates a post in database using post id. A post can only be edited by the owner */
   async update(req: RequestWithUser, res: Response) {
-    const id = new Types.ObjectId(req.params.id);
-    const reqBody: ICreatePost = req.body;
-
     try {
-      await postService.updatePost(id, reqBody.body);
+      const userId = req.user.sub;
+      const reqBody: ICreatePost = req.body;
+      const postId = new Types.ObjectId(req.params.id);
+
+      await postService.updatePost(postId, userId, reqBody.content);
 
       return res
         .status(201)
@@ -56,11 +62,13 @@ class PostController {
     }
   }
 
+  /** Delete a single post using post id. A post can only be deleted by the owner */
   async delete(req: RequestWithUser, res: Response) {
-    const id = new Types.ObjectId(req.params.id);
-
     try {
-      await postService.deletePost(id);
+      const userId = req.user.sub;
+      const postId = new Types.ObjectId(req.params.id);
+
+      await postService.deletePost(postId, userId);
 
       return res
         .status(200)

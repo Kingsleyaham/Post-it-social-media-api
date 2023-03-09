@@ -1,9 +1,10 @@
 import { authService } from "./../services/auth.service";
 import { ILogin } from "../interfaces/login.interface";
 import { Request, Response } from "express";
-import { userService } from "../services/user.services";
+import { userService } from "../services/user.service";
 
 class AuthController {
+  /** Create an account for a user */
   async signup(req: Request, res: Response) {
     try {
       const newUser = await userService.createUser(req.body);
@@ -14,6 +15,7 @@ class AuthController {
     }
   }
 
+  /** login a user */
   async login(req: Request, res: Response) {
     const reqBody: ILogin = req.body;
     try {
