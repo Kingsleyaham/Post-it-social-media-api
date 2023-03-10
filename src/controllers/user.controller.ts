@@ -1,6 +1,7 @@
 import { userService } from "../services/user.service";
 import { Request, Response } from "express";
 import { Types } from "mongoose";
+import { createImageTag } from "../utils/createImageTag";
 
 class UserController {
   /** Fetch all users from database */
@@ -20,9 +21,17 @@ class UserController {
       const id = new Types.ObjectId(req.params.id);
       const user = await userService.findById(id);
 
-      if (user) return res.status(200).json({ success: true, user });
+      if (!user)
+        return res
+          .status(401)
+          .json({ success: false, message: "user not found" });
 
-      return res.status(401).json({ success: 0, message: "user not found" });
+      // create an image tag using avatarUrl
+      const img = createImageTag(user.avatarUrl, user.username);
+
+      return res
+        .status(200)
+        .json({ success: true, user: { ...user._doc, img } });
     } catch (err: any) {
       res.status(401).json({ success: false, message: err.message });
     }

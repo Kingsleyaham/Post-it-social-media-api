@@ -40,7 +40,7 @@ class CommentService {
     newComment: string
   ) {
     const commentExist: any = await this.findOne(postId, commentId);
-    const commentUser = new Types.ObjectId(commentExist.user);
+    const commentUser = new Types.ObjectId(commentExist?.user);
 
     if (!commentExist) throw new Error("comment not found");
 
@@ -56,7 +56,7 @@ class CommentService {
     userId: Types.ObjectId
   ) {
     const commentExist: any = await this.findOne(postId, commentId);
-    const commentUser = new Types.ObjectId(commentExist.user);
+    const commentUser = new Types.ObjectId(commentExist?.user);
 
     if (!commentExist) throw new Error("comment not found");
 

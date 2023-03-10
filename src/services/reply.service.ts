@@ -47,7 +47,7 @@ class ReplyService {
     newReply: string
   ) {
     const replyExist: any = await this.findOne(commentId, replyId);
-    const replyUser = new Types.ObjectId(replyExist.user);
+    const replyUser = new Types.ObjectId(replyExist?.user);
 
     if (!replyExist) throw new Error("Reply does not exist");
 
@@ -63,7 +63,7 @@ class ReplyService {
     userId: Types.ObjectId
   ) {
     const replyExist: any = await this.findOne(commentId, replyId);
-    const replyUser = new Types.ObjectId(replyExist.user);
+    const replyUser = new Types.ObjectId(replyExist?.user);
 
     if (!replyExist) throw new Error("Reply does not exist");
 

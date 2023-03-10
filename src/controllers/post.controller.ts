@@ -38,7 +38,9 @@ class PostController {
 
       if (post) return res.status(200).json({ success: true, post });
 
-      return res.status(404).json({ success: 0, message: "post not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "post not found" });
     } catch (err: any) {
       res.status(401).json({ success: false, message: err.message });
     }

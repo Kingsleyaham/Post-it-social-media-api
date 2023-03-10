@@ -27,7 +27,7 @@ app.use(bodyParser.json());
 app.use(helmet());
 
 // router
-app.use("/api", router);
+app.use("/api/v1", router);
 
 app.get("/*", (req: Request, res: Response) => {
   res.send("page not found");

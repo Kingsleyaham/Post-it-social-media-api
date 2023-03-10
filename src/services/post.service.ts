@@ -24,7 +24,7 @@ class PostService {
     post: string
   ) {
     const postExist: any = await this.findOne(postId);
-    const postUser = new Types.ObjectId(postExist.user);
+    const postUser = new Types.ObjectId(postExist?.user);
 
     if (!postExist) throw new Error("error updated post");
 
@@ -36,7 +36,7 @@ class PostService {
 
   async deletePost(postId: Types.ObjectId, userId: Types.ObjectId) {
     const postExist: any = await this.findOne(postId);
-    const postUser = new Types.ObjectId(postExist.user);
+    const postUser = new Types.ObjectId(postExist?.user);
 
     if (!postExist) throw new Error("post not found");
 

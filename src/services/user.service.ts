@@ -54,13 +54,15 @@ class UserService {
   /** Update a user info in database */
   async updateUser(id: Types.ObjectId, user: Partial<ICreateUser>) {
     const userExist = await this.findById(id);
-    if (userExist) {
-      const avatarUrl = await generateRandomAvatar(userExist.email);
 
-      return User.findByIdAndUpdate(id, { ...user, avatarUrl });
-    }
+    if (!userExist) throw new Error("user not found");
 
-    throw new Error("user not found");
+    if (Object.keys(user).length === 0)
+      throw new Error("please provide field(s) to update");
+
+    const avatarUrl = await generateRandomAvatar(userExist.email);
+
+    return User.findByIdAndUpdate(id, { ...user, avatarUrl });
   }
 
   /** delete a user in database */
