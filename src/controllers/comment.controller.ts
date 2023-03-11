@@ -1,3 +1,4 @@
+import { MESSAGES } from "./../constants";
 import { ICreatePost } from "./../interfaces/createPost.interface";
 import { Response } from "express";
 import { Types } from "mongoose";
@@ -25,13 +26,9 @@ class CommentController {
       const reqBody: ICreatePost = req.body;
       const postId = new Types.ObjectId(req.params.postId);
 
-      const comment = await commentService.createComment(
-        userId,
-        postId,
-        reqBody.content
-      );
+      await commentService.createComment(userId, postId, reqBody.content);
 
-      return res.status(201).json({ success: true, comment });
+      return res.status(201).json({ success: true, message: MESSAGES.CREATED });
     } catch (err: any) {
       res.status(401).json({ success: false, message: err.message });
     }
@@ -45,11 +42,9 @@ class CommentController {
 
       const comment = await commentService.findOne(postId, commentId);
 
-      if (comment) return res.status(200).json({ success: true, comment });
+      if (!comment) throw new Error("comment not found");
 
-      return res
-        .status(404)
-        .json({ success: false, message: "comment not found" });
+      return res.status(200).json({ success: true, comment });
     } catch (err: any) {
       res.status(401).json({ success: false, message: err.message });
     }
@@ -70,10 +65,7 @@ class CommentController {
         reqBody.content
       );
 
-      return res.status(201).json({
-        success: true,
-        message: "Comment updated successfully",
-      });
+      return res.status(201).json({ success: true, message: MESSAGES.UPDATED });
     } catch (err: any) {
       res.status(401).json({ success: false, message: err.message });
     }
@@ -88,9 +80,7 @@ class CommentController {
 
       await commentService.deleteComment(postId, commentId, userId);
 
-      return res
-        .status(200)
-        .json({ success: true, message: "Comment deleted successfully" });
+      return res.status(200).json({ success: true, message: MESSAGES.DELETED });
     } catch (err: any) {
       res.status(401).json({ success: false, message: err.message });
     }

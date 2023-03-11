@@ -20,6 +20,7 @@ export const requireAuth = async (
     });
   } else {
     return res.status(401).json({
+      success: false,
       message: "you are unauthenticated please login to access route",
     });
   }

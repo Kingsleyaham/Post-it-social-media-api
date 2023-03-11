@@ -1,3 +1,4 @@
+import { MESSAGES } from "./../constants/index";
 import { userService } from "../services/user.service";
 import { Request, Response } from "express";
 import { Types } from "mongoose";
@@ -44,9 +45,7 @@ class UserController {
 
       await userService.updateUser(id, req.body);
 
-      return res
-        .status(201)
-        .json({ success: true, message: "User updated successfully" });
+      return res.status(201).json({ success: true, message: MESSAGES.UPDATED });
     } catch (err: any) {
       res.status(401).json({ success: false, message: err.message });
     }
@@ -59,9 +58,7 @@ class UserController {
 
       await userService.deleteUser(id);
 
-      return res
-        .status(200)
-        .json({ success: true, message: "User deleted successfully" });
+      return res.status(200).json({ success: true, message: MESSAGES.DELETED });
     } catch (err: any) {
       res.status(401).json({ success: false, message: err.message });
     }
