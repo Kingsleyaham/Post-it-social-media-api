@@ -60,6 +60,8 @@ class UserService {
     if (Object.keys(user).length === 0)
       throw new Error("please provide field(s) to update");
 
+    if (user.email) throw new Error("you cannot update your email");
+
     const avatarUrl = await generateRandomAvatar(userExist.email);
 
     return User.findByIdAndUpdate(id, { ...user, avatarUrl });
