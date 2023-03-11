@@ -30,5 +30,7 @@ app.use(helmet());
 app.use("/api/v1", router);
 
 app.get("/*", (req: Request, res: Response) => {
-  res.send("page not found");
+  res.send(
+    "kindly visit <a href='https://kingsley-postit-api.onrender.com/api/v1/docs'>https://kingsley-postit-api.onrender.com/api/v1/docs</> to view api documentation"
+  );
 });
