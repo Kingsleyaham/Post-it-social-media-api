@@ -2,7 +2,6 @@ import authDoc from "./auth";
 import userDoc from "./users";
 import postDoc from "./posts";
 import commentDoc from "./comments";
-import replyDoc from "./replies";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -50,11 +49,6 @@ const swaggerDoc = {
       description:
         "Fetch all comments of a particular post, fetch a single comment, create a new comment, update a comment and delete a comment",
     },
-    {
-      name: "replies",
-      description:
-        "Fetch all replies of a particular comment, fetch a single reply, create a new reply, update a reply and delete a reply",
-    },
   ],
 
   paths: {
@@ -66,8 +60,6 @@ const swaggerDoc = {
     "/posts/{id}": postDoc.reqByID,
     "/posts/{postId}/comments": commentDoc.baseUrl,
     "/posts/{postId}/comments/{id}": commentDoc.reqByID,
-    "/posts/{postId}/comments/{commentId}/replies": replyDoc.baseUrl,
-    "/posts/{postId}/comments/{commentId}/replies/{id}": replyDoc.reqByID,
   },
 
   components: {
@@ -180,15 +172,6 @@ const swaggerDoc = {
       },
       postId: {
         name: "postId",
-        in: "path",
-        description: "ID of object to return",
-        required: true,
-        schema: {
-          type: "string",
-        },
-      },
-      commentId: {
-        name: "commentId",
         in: "path",
         description: "ID of object to return",
         required: true,
