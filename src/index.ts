@@ -31,6 +31,6 @@ app.use("/api/v1", router);
 
 app.get("/*", (req: Request, res: Response) => {
   res.send(
-    "kindly visit <a href='https://kingsley-postit-api.onrender.com/api/v1/docs'>https://kingsley-postit-api.onrender.com/api/v1/docs</> to view api documentation"
+    `kindly visit <a href='${appConfig.DOC_URL}'>${appConfig.DOC_URL}<a/> to view api documentation`
   );
 });
