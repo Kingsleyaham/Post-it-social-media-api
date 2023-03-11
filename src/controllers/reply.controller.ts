@@ -1,3 +1,4 @@
+import { MESSAGES } from "./../constants/index";
 import { ICreatePost } from "./../interfaces/createPost.interface";
 import { replyService } from "./../services/reply.service";
 import { Response } from "express";
@@ -25,14 +26,14 @@ class ReplyController {
       const commentId = new Types.ObjectId(req.params.commentId);
       const reqBody: ICreatePost = req.body;
 
-      const reply = await replyService.createReply(
+      await replyService.createReply(
         userId,
         postId,
         commentId,
         reqBody.content
       );
 
-      return res.status(201).json({ success: true, reply });
+      return res.status(201).json({ success: true, message: MESSAGES.CREATED });
     } catch (err: any) {
       res.status(401).json({ success: false, message: err.message });
     }
@@ -46,11 +47,9 @@ class ReplyController {
 
       const reply = await replyService.findOne(commentId, replyId);
 
-      if (reply) return res.status(200).json({ success: true, result: reply });
+      if (!reply) throw new Error("reply not found");
 
-      return res
-        .status(404)
-        .json({ success: false, message: "reply not found" });
+      return res.status(200).json({ success: true, result: reply });
     } catch (err: any) {
       res.status(401).json({ success: false, message: err.message });
     }
@@ -71,10 +70,7 @@ class ReplyController {
         reqBody.content
       );
 
-      return res.status(201).json({
-        success: true,
-        message: "reply updated successfully",
-      });
+      return res.status(201).json({ success: true, message: MESSAGES.UPDATED });
     } catch (err: any) {
       res.status(401).json({ success: false, message: err.message });
     }
@@ -89,10 +85,7 @@ class ReplyController {
 
       await replyService.deleteReply(replyId, commentId, userId);
 
-      return res.status(200).json({
-        success: true,
-        message: "reply deleted successfully",
-      });
+      return res.status(200).json({ success: true, message: MESSAGES.DELETED });
     } catch (err: any) {
       res.status(401).json({ success: false, message: err.message });
     }

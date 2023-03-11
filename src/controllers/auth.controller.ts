@@ -1,4 +1,4 @@
-import { createImageTag } from "./../utils/createImageTag";
+import { MESSAGES } from "./../constants";
 import { authService } from "./../services/auth.service";
 import { ILogin } from "../interfaces/login.interface";
 import { Request, Response } from "express";
@@ -10,12 +10,7 @@ class AuthController {
     try {
       const newUser = await userService.createUser(req.body);
 
-      const { password, ...responseUser } = newUser?._doc;
-
-      // create an image tag using avatarUrl
-      const img = createImageTag(responseUser.avatarUrl, responseUser.username);
-
-      res.status(201).json({ success: true, user: { ...responseUser, img } });
+      res.status(201).json({ success: true, message: MESSAGES.CREATED });
     } catch (err: any) {
       res.status(401).json({ success: false, message: err.message });
     }

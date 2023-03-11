@@ -1,3 +1,4 @@
+import { MESSAGES } from "./../constants";
 import { postService } from "../services/post.service";
 import { RequestWithUser } from "./../interfaces/request.interface";
 import { Response } from "express";
@@ -21,9 +22,9 @@ class PostController {
     const userId = req.user.sub;
     const reqBody: ICreatePost = req.body;
     try {
-      const post = await postService.createPost(userId, reqBody.content);
+      await postService.createPost(userId, reqBody.content);
 
-      return res.status(201).json({ success: true, post });
+      return res.status(201).json({ success: true, message: MESSAGES.CREATED });
     } catch (err: any) {
       res.status(401).json({ success: false, message: err.message });
     }
@@ -36,9 +37,9 @@ class PostController {
 
       const post = await postService.findOne(postId);
 
-      if (post) return res.status(200).json({ success: true, post });
+      if (!post) throw new Error("post not found");
 
-      return res.status(404).json({ success: 0, message: "post not found" });
+      return res.status(200).json({ success: true, post });
     } catch (err: any) {
       res.status(401).json({ success: false, message: err.message });
     }
@@ -53,9 +54,7 @@ class PostController {
 
       await postService.updatePost(postId, userId, reqBody.content);
 
-      return res
-        .status(201)
-        .json({ success: true, message: "Post updated successfully" });
+      return res.status(201).json({ success: true, message: MESSAGES.UPDATED });
     } catch (err: any) {
       res.status(401).json({ success: false, message: err.message });
     }
@@ -69,9 +68,7 @@ class PostController {
 
       await postService.deletePost(postId, userId);
 
-      return res
-        .status(200)
-        .json({ success: true, message: "Post deleted successfully" });
+      return res.status(200).json({ success: true, message: MESSAGES.DELETED });
     } catch (err: any) {
       res.status(401).json({ success: false, message: err.message });
     }
