@@ -14,6 +14,8 @@ Post-it allows you to post anything on a single post-it. A post-it is a single p
     - [Database Design](#database-design)
   - [My process](#my-process)
     - [Built with](#built-with)
+  - [Soft Delete](#soft-delete)
+    - [How I Handled Soft Delete](#how-i-handled-soft-delete)
   - [Author](#author)
 
 ## Overview
@@ -48,7 +50,7 @@ Post-it allows you to post anything on a single post-it. A post-it is a single p
 
 ### Database Design
 
-- [Database Modeling](https://app.dbdesigner.net/designer/schema/607599)
+- [Database Modeling](https://dbdesigner.page.link/BxBpcWwEp4EqrvoT8)
 
 ## My process
 
@@ -62,6 +64,16 @@ Post-it allows you to post anything on a single post-it. A post-it is a single p
 - [Joi](https://joi.dev/) - Schema description language
   and data validator for JavaScript
 - [JWT](https://jwt.io/) - JSON Web Tokens
+
+## Soft Delete
+
+### How I Handled Soft Delete
+
+- Created two fields in my collections namely: isDeleted and deletedAt.
+- **isDeleted** has datatype of boolean with default value **_false_**
+- **deletedAt** has datatype of datetime with default value **_null_**
+- One a user sends a delete request i update the **_isDeleted_** field to **_truee_** and **_deletedAt_** to the date and time the request was made.
+- When fetching data from database i fetch records which has **_isDeleted_** column as false
 
 ## Author
 

@@ -26,7 +26,7 @@ class PostService {
     const postExist: any = await this.findOne(postId);
     const postUser = new Types.ObjectId(postExist?.user);
 
-    if (!postExist) throw new Error("error updated post");
+    if (!postExist) throw new Error("post does not exist");
 
     if (!(postUser == userId))
       throw new Error("You can only edit your own post");
