@@ -16,7 +16,9 @@ const swaggerDoc = {
     contact: {
       email: "mailto:kingsleyaham6@gmail.com",
     },
-    description: `PostIt is a simple social media app api built using NodeJs, Express, Typescript, MongoDB Database, Mongoose ODM`,
+    description: `PostIt is a simple social media app api built using NodeJs, Express, Typescript, MongoDB Database, Mongoose ODM. 
+                  <br />**Note: some routes are protected to access them you need to login, copy the *accessToken* generated, 
+                  click on the *Authorize* button, paste the bearer token in the  box and click on authorize***`,
   },
   servers: [
     {
