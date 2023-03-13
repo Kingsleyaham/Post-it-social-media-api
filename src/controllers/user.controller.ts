@@ -1,3 +1,4 @@
+import { handleError } from "./../utils/handleError";
 import { MESSAGES } from "./../constants/index";
 import { userService } from "../services/user.service";
 import { Request, Response } from "express";
@@ -14,7 +15,8 @@ class UserController {
 
       return res.status(200).json({ success: true, users });
     } catch (err: any) {
-      res.status(401).json({ success: false, message: err.message });
+      const message = handleError(err);
+      res.status(401).json({ success: false, message });
     }
   }
 
@@ -36,7 +38,8 @@ class UserController {
         .status(200)
         .json({ success: true, user: { ...user._doc, img } });
     } catch (err: any) {
-      res.status(401).json({ success: false, message: err.message });
+      const message = handleError(err);
+      res.status(401).json({ success: false, message });
     }
   }
 
@@ -49,7 +52,8 @@ class UserController {
 
       return res.status(201).json({ success: true, message: MESSAGES.UPDATED });
     } catch (err: any) {
-      res.status(401).json({ success: false, message: err.message });
+      const message = handleError(err);
+      res.status(401).json({ success: false, message });
     }
   }
 
@@ -62,7 +66,8 @@ class UserController {
 
       return res.status(200).json({ success: true, message: MESSAGES.DELETED });
     } catch (err: any) {
-      res.status(401).json({ success: false, message: err.message });
+      const message = handleError(err);
+      res.status(401).json({ success: false, message });
     }
   }
 
@@ -80,7 +85,8 @@ class UserController {
 
       return res.status(200).json({ success: true, posts });
     } catch (err: any) {
-      res.status(401).json({ success: false, message: err.message });
+      const message = handleError(err);
+      res.status(401).json({ success: false, message });
     }
   }
 
@@ -98,7 +104,8 @@ class UserController {
 
       return res.status(200).json({ success: true, post });
     } catch (err: any) {
-      res.status(401).json({ success: false, message: err.message });
+      const message = handleError(err);
+      res.status(401).json({ success: false, message });
     }
   }
 
@@ -114,7 +121,8 @@ class UserController {
 
       return res.status(200).json({ success: true, comments });
     } catch (err: any) {
-      res.status(401).json({ success: false, message: err.message });
+      const message = handleError(err);
+      res.status(401).json({ success: false, message });
     }
   }
 
@@ -137,7 +145,8 @@ class UserController {
 
       return res.status(200).json({ success: true, comment });
     } catch (err: any) {
-      res.status(401).json({ success: false, message: err.message });
+      const message = handleError(err);
+      res.status(401).json({ success: false, message });
     }
   }
 }

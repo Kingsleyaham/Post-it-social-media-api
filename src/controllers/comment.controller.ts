@@ -4,6 +4,7 @@ import { ICreatePost } from "./../interfaces/createPost.interface";
 import { Response } from "express";
 import { RequestWithUser } from "../interfaces/request.interface";
 import { commentService } from "../services/comment.service";
+import { handleError } from "../utils/handleError";
 
 class CommentController {
   /** Fetch all comments of a post from database sorted by newest first  */
@@ -15,7 +16,8 @@ class CommentController {
 
       return res.status(200).json({ success: true, comments });
     } catch (err: any) {
-      res.status(401).json({ success: false, message: err.message });
+      const message = handleError(err);
+      res.status(401).json({ success: false, message });
     }
   }
 
@@ -30,7 +32,8 @@ class CommentController {
 
       return res.status(201).json({ success: true, message: MESSAGES.CREATED });
     } catch (err: any) {
-      res.status(401).json({ success: false, message: err.message });
+      const message = handleError(err);
+      res.status(401).json({ success: false, message });
     }
   }
 
@@ -46,7 +49,8 @@ class CommentController {
 
       return res.status(200).json({ success: true, comment });
     } catch (err: any) {
-      res.status(401).json({ success: false, message: err.message });
+      const message = handleError(err);
+      res.status(401).json({ success: false, message });
     }
   }
 
@@ -67,7 +71,8 @@ class CommentController {
 
       return res.status(201).json({ success: true, message: MESSAGES.UPDATED });
     } catch (err: any) {
-      res.status(401).json({ success: false, message: err.message });
+      const message = handleError(err);
+      res.status(401).json({ success: false, message });
     }
   }
 
@@ -82,7 +87,8 @@ class CommentController {
 
       return res.status(200).json({ success: true, message: MESSAGES.DELETED });
     } catch (err: any) {
-      res.status(401).json({ success: false, message: err.message });
+      const message = handleError(err);
+      res.status(401).json({ success: false, message });
     }
   }
 }

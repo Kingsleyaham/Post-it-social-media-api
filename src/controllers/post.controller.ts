@@ -5,6 +5,7 @@ import { RequestWithUser } from "./../interfaces/request.interface";
 import { Response } from "express";
 import { ICreatePost } from "../interfaces/createPost.interface";
 import { throwError } from "../utils/throwError";
+import { handleError } from "../utils/handleError";
 
 class PostController {
   /** Fetch all posts from database sorted by newest first  */
@@ -14,7 +15,8 @@ class PostController {
 
       return res.status(200).json({ success: true, posts });
     } catch (err: any) {
-      res.status(401).json({ success: false, message: err.message });
+      const message = handleError(err);
+      res.status(401).json({ success: false, message });
     }
   }
 
@@ -27,7 +29,8 @@ class PostController {
 
       return res.status(201).json({ success: true, message: MESSAGES.CREATED });
     } catch (err: any) {
-      res.status(401).json({ success: false, message: err.message });
+      const message = handleError(err);
+      res.status(401).json({ success: false, message });
     }
   }
 
@@ -42,7 +45,8 @@ class PostController {
 
       return res.status(200).json({ success: true, post });
     } catch (err: any) {
-      res.status(401).json({ success: false, message: err.message });
+      const message = handleError(err);
+      res.status(401).json({ success: false, message });
     }
   }
 
@@ -57,7 +61,8 @@ class PostController {
 
       return res.status(201).json({ success: true, message: MESSAGES.UPDATED });
     } catch (err: any) {
-      res.status(401).json({ success: false, message: err.message });
+      const message = handleError(err);
+      res.status(401).json({ success: false, message });
     }
   }
 
@@ -71,7 +76,8 @@ class PostController {
 
       return res.status(200).json({ success: true, message: MESSAGES.DELETED });
     } catch (err: any) {
-      res.status(401).json({ success: false, message: err.message });
+      const message = handleError(err);
+      res.status(401).json({ success: false, message });
     }
   }
 }

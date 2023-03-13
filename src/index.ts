@@ -4,7 +4,7 @@ import helmet from "helmet";
 import router from "./routes/";
 import dotenv from "dotenv";
 import database from "./database/db.connection";
-import { appConfig, dbConfig } from "./config";
+import { appConfig } from "./config";
 
 const app = express();
 dotenv.config();
@@ -22,7 +22,7 @@ app.get("/*", (req: Request, res: Response) => {
   );
 });
 
-// starting up server
+// start up server
 app.listen(appConfig.PORT, () => {
   console.log(`server running on http://${appConfig.HOST}:${appConfig.PORT}`);
   database();
