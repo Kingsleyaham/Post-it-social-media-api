@@ -14,7 +14,7 @@ export const requireAuth = async (
   //   check json web token exists and is verified
   if (token) {
     jwt.verify(token, jwtConfig.ACCESS_TOKEN_SECRET, (err, user) => {
-      if (err) return res.status(403).json({ message: "unable to login" });
+      if (err) return res.status(403).json({ message: "an error occured" });
       req.user = user;
       next();
     });

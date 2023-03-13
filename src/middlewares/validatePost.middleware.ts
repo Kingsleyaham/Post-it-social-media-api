@@ -9,7 +9,8 @@ export const validatePost = async (
   try {
     await postValidationSchema.validateAsync({
       ...req.body,
-    });
+    },
+      { abortEarly: false });
 
     next();
   } catch (err: any) {

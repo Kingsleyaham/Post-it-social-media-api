@@ -3,16 +3,18 @@ import { authService } from "./../services/auth.service";
 import { ILogin } from "../interfaces/login.interface";
 import { Request, Response } from "express";
 import { userService } from "../services/user.service";
+import { handleError } from "../utils/handleError";
 
 class AuthController {
   /** Create an account for a user */
   async signup(req: Request, res: Response) {
     try {
-      const newUser = await userService.createUser(req.body);
+      await userService.createUser(req.body);
 
       res.status(201).json({ success: true, message: MESSAGES.CREATED });
     } catch (err: any) {
-      res.status(401).json({ success: false, message: err.message });
+      const message = handleError(err);
+      res.status(401).json({ success: false, message });
     }
   }
 
@@ -24,7 +26,8 @@ class AuthController {
 
       return res.status(200).json({ success: true, ...user });
     } catch (err: any) {
-      res.status(401).json({ success: false, message: err.message });
+      const message = handleError(err);
+      res.status(401).json({ success: false, message });
     }
   }
 }

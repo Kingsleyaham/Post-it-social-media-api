@@ -1,5 +1,5 @@
 import { generateRandomAvatar } from "./../utils/avatar/index";
-import { Types } from "mongoose";
+import { isValidObjectId, Types } from "mongoose";
 import User from "../models/user.model";
 import { ICreateUser } from "../interfaces/createUser.interface";
 
@@ -12,15 +12,6 @@ class UserService {
       .select("-password");
   }
 
-  /** Fetch all users from database */
-  async findAll() {
-    return User.find({})
-      .where("isDeleted")
-      .equals(false)
-      .select("-password")
-      .lean();
-  }
-
   /** Fetch a single user by username */
   async findByUsername(username: string) {
     return User.findOne({ username }).where("isDeleted").equals(false);
@@ -31,13 +22,30 @@ class UserService {
     return User.findOne({ email }).where("isDeleted").equals(false);
   }
 
+  /** Fetch a single user from database using id or username */
+  async findOne(id: any) {
+    const user = isValidObjectId(id)
+      ? await this.findById(id)
+      : await this.findByUsername(id);
+
+    return user;
+  }
+
+  /** Fetch all users from database */
+  async findAll() {
+    return User.find({})
+      .where("isDeleted")
+      .equals(false)
+      .select("-password")
+      .lean();
+  }
+
   /** Create a new user in database */
   async createUser(newUser: ICreateUser) {
-    const usernameExist = await this.findByUsername(newUser.username);
-    const emailExist = await this.findByEmail(newUser.email);
+    const { username, email, password } = newUser;
+    const userExist = await User.findOne({ $or: [{ email }, { username }] });
 
-    if (!(usernameExist || emailExist)) {
-      const { username, email, password } = newUser;
+    if (!userExist) {
       const avatarUrl = await generateRandomAvatar(email);
 
       return User.create({

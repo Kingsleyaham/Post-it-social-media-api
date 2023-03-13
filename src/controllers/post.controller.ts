@@ -1,9 +1,11 @@
+import { parseId } from "./../utils/parseId";
 import { MESSAGES } from "./../constants";
 import { postService } from "../services/post.service";
 import { RequestWithUser } from "./../interfaces/request.interface";
 import { Response } from "express";
 import { ICreatePost } from "../interfaces/createPost.interface";
-import { Types } from "mongoose";
+import { throwError } from "../utils/throwError";
+import { handleError } from "../utils/handleError";
 
 class PostController {
   /** Fetch all posts from database sorted by newest first  */
@@ -13,7 +15,8 @@ class PostController {
 
       return res.status(200).json({ success: true, posts });
     } catch (err: any) {
-      res.status(401).json({ success: false, message: err.message });
+      const message = handleError(err);
+      res.status(401).json({ success: false, message });
     }
   }
 
@@ -26,22 +29,24 @@ class PostController {
 
       return res.status(201).json({ success: true, message: MESSAGES.CREATED });
     } catch (err: any) {
-      res.status(401).json({ success: false, message: err.message });
+      const message = handleError(err);
+      res.status(401).json({ success: false, message });
     }
   }
 
   /** Fetch a single post from database using post id*/
   async findOne(req: RequestWithUser, res: Response) {
     try {
-      const postId = new Types.ObjectId(req.params.id);
+      const postId = parseId(req.params.id);
 
       const post = await postService.findOne(postId);
 
-      if (!post) throw new Error("post not found");
+      if (!post) throwError("post not found");
 
       return res.status(200).json({ success: true, post });
     } catch (err: any) {
-      res.status(401).json({ success: false, message: err.message });
+      const message = handleError(err);
+      res.status(401).json({ success: false, message });
     }
   }
 
@@ -50,13 +55,14 @@ class PostController {
     try {
       const userId = req.user.sub;
       const reqBody: ICreatePost = req.body;
-      const postId = new Types.ObjectId(req.params.id);
+      const postId = parseId(req.params.id);
 
       await postService.updatePost(postId, userId, reqBody.content);
 
       return res.status(201).json({ success: true, message: MESSAGES.UPDATED });
     } catch (err: any) {
-      res.status(401).json({ success: false, message: err.message });
+      const message = handleError(err);
+      res.status(401).json({ success: false, message });
     }
   }
 
@@ -64,13 +70,14 @@ class PostController {
   async delete(req: RequestWithUser, res: Response) {
     try {
       const userId = req.user.sub;
-      const postId = new Types.ObjectId(req.params.id);
+      const postId = parseId(req.params.id);
 
       await postService.deletePost(postId, userId);
 
       return res.status(200).json({ success: true, message: MESSAGES.DELETED });
     } catch (err: any) {
-      res.status(401).json({ success: false, message: err.message });
+      const message = handleError(err);
+      res.status(401).json({ success: false, message });
     }
   }
 }
