@@ -70,7 +70,10 @@ class PostService {
   /** Fetch a single user post using username and postId */
   async findOneByUsername(postId: Types.ObjectId, username: string) {
     const user = await userService.findByUsername(username);
-    const userId = parseId(user?._id);
+
+    if (!user) throw new Error("invalid user handle");
+
+    const userId = parseId(user._id);
 
     return this.findOneByUserId(postId, userId);
   }
