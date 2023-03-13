@@ -1,8 +1,10 @@
 import { MESSAGES } from "./../constants/index";
 import { userService } from "../services/user.service";
 import { Request, Response } from "express";
-import { Types } from "mongoose";
 import { createImageTag } from "../utils/createImageTag";
+import { postService } from "../services/post.service";
+import { parseId } from "../utils/parseId";
+import { commentService } from "../services/comment.service";
 
 class UserController {
   /** Fetch all users from database */
@@ -16,11 +18,14 @@ class UserController {
     }
   }
 
-  /** Fetch a single user from database using id */
+  /** Fetch a single user from database using id, @username */
   async findUser(req: Request, res: Response) {
     try {
-      const id = new Types.ObjectId(req.params.id);
-      const user = await userService.findById(id);
+      const id = req.params.id.includes("@")
+        ? req.params.id.split("@")[1]
+        : parseId(req.params.id);
+
+      const user = await userService.findOne(id);
 
       if (!user) throw new Error("user not found");
 
@@ -38,7 +43,7 @@ class UserController {
   /** Updates user info in database using id */
   async updateUser(req: Request, res: Response) {
     try {
-      const id = new Types.ObjectId(req.params.id);
+      const id = parseId(req.params.id);
 
       await userService.updateUser(id, req.body);
 
@@ -51,11 +56,86 @@ class UserController {
   /** Delete a user in database using id */
   async deleteUser(req: Request, res: Response) {
     try {
-      const id = new Types.ObjectId(req.params.id);
+      const id = parseId(req.params.id);
 
       await userService.deleteUser(id);
 
       return res.status(200).json({ success: true, message: MESSAGES.DELETED });
+    } catch (err: any) {
+      res.status(401).json({ success: false, message: err.message });
+    }
+  }
+
+  // controllers to handle fetching of user posts and comments
+
+  /** Fetch users posts from database using user id or @username */
+  async findPostsByUser(req: Request, res: Response) {
+    try {
+      // check if userId is @username or id and store it in id variable
+      const id = req.params.userId.includes("@")
+        ? req.params.userId.split("@")[1]
+        : parseId(req.params.userId);
+
+      const posts = await postService.findUserPosts(id);
+
+      return res.status(200).json({ success: true, posts });
+    } catch (err: any) {
+      res.status(401).json({ success: false, message: err.message });
+    }
+  }
+
+  /** Fetch a single user post from database using user id or @username  and and also post id*/
+  async findOnePostByUser(req: Request, res: Response) {
+    try {
+      const postId = parseId(req.params.id);
+      const userId = req.params.userId.includes("@")
+        ? req.params.userId.split("@")[1]
+        : parseId(req.params.userId);
+
+      const post = await postService.findOneUserPost(userId, postId);
+
+      if (!post) throw new Error("post not found");
+
+      return res.status(200).json({ success: true, post });
+    } catch (err: any) {
+      res.status(401).json({ success: false, message: err.message });
+    }
+  }
+
+  /** Fetch users comment on a post from database using user id or @username */
+  async findCommentsByUser(req: Request, res: Response) {
+    try {
+      const postId = parseId(req.params.postId);
+      const userId = req.params.userId.includes("@")
+        ? req.params.userId.split("@")[1]
+        : parseId(req.params.userId);
+
+      const comments = await commentService.findUserComments(postId, userId);
+
+      return res.status(200).json({ success: true, comments });
+    } catch (err: any) {
+      res.status(401).json({ success: false, message: err.message });
+    }
+  }
+
+  /** Fetch a single comment on a post by user from database using user id or @username and also comment and post id*/
+  async findOneCommentByUser(req: Request, res: Response) {
+    try {
+      const commentId = parseId(req.params.id);
+      const postId = parseId(req.params.postId);
+      const userId = req.params.userId.includes("@")
+        ? req.params.userId.split("@")[1]
+        : parseId(req.params.userId);
+
+      const comment = await commentService.findOneUserComment(
+        userId,
+        postId,
+        commentId
+      );
+
+      if (!comment) throw new Error("comment not found");
+
+      return res.status(200).json({ success: true, comment });
     } catch (err: any) {
       res.status(401).json({ success: false, message: err.message });
     }
