@@ -3,7 +3,7 @@ export const getUserComment = {
     tags: ["users"],
     summary: "Find a single user comment by id",
     description:
-      "Fetch a single comment on a post by user from database using user id or @<username> and also comment and post id",
+      "Fetch a single comment on a post by user from database using user id or @username and also comment and post id",
     parameters: [
       {
         $ref: "#/components/parameters/userId",

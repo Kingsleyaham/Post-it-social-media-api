@@ -1,7 +1,7 @@
 export const getUser = {
   get: {
     tags: ["users"],
-    summary: "Find user by id or @<username> handle",
+    summary: "Find user by id or @username handle",
     description:
       "returns a single user from database using user id or username ",
     parameters: [
