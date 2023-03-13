@@ -56,6 +56,11 @@ const swaggerDoc = {
     "/auth/login": authDoc.login,
     "/users": userDoc.baseUrl,
     "/users/{id}": userDoc.reqByID,
+    "/users/{userId}/posts": postDoc.userPosts,
+    "/users/{userId}/posts/{id}": postDoc.userSinglePost,
+    "/users/{userId}/posts/{postId}/comments": commentDoc.userComments,
+    "/users/{userId}/posts/{postId}/comments/{id}":
+      commentDoc.userSingleComment,
     "/posts": postDoc.baseUrl,
     "/posts/{id}": postDoc.reqByID,
     "/posts/{postId}/comments": commentDoc.baseUrl,
@@ -172,6 +177,15 @@ const swaggerDoc = {
       },
       postId: {
         name: "postId",
+        in: "path",
+        description: "ID of object to return",
+        required: true,
+        schema: {
+          type: "string",
+        },
+      },
+      userId: {
+        name: "userId",
         in: "path",
         description: "ID of object to return",
         required: true,
