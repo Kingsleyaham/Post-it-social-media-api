@@ -12,7 +12,7 @@ class AuthService {
     const payload = { sub: userId, email };
 
     const token = jwt.sign(payload, jwtConfig.ACCESS_TOKEN_SECRET, {
-      expiresIn: "1d",
+      expiresIn: "3d",
     });
 
     return { accessToken: token };

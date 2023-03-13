@@ -7,6 +7,8 @@ dotenv.config();
 
 const router = Router();
 
+const port = process.env.PORT || 5000;
+
 const swaggerOptions = {
   customCss: ".swagger-ui .topbar { display: none }",
 };

@@ -29,8 +29,7 @@ export const validateUser = async (
   try {
     await schema.validateAsync({
       ...req.body,
-    },
-      { abortEarly: false });
+    });
 
     next();
   } catch (err: any) {
